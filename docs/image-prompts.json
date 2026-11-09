@@ -1,0 +1,69 @@
+{
+  "tool": "Built-in image_gen (no CLI/API fallback)",
+  "note": "All 15 photographs generated specifically for this fictional brand. Photographic product shapes are visual concepts, not manufactured products.",
+  "assets": [
+    {
+      "name": "hero",
+      "currentFile": "assets/images/hero-wide.jpg",
+      "editPromptFile": "docs/hero-expansion-prompt.txt",
+      "editTool": "Built-in image_gen; existing photograph outpainted and reframed with smaller products and complete pedestals.",
+      "prompt": "Use case: product-mockup. Asset: premium skincare website HERO photograph, landscape 3:2. Create a photorealistic luxury beauty editorial still life for FORME. Architectural warm ivory limestone plinths in a sunlit taupe studio, dramatic soft-edged diagonal shadows. On the RIGHT HALF a single tall matte charcoal cylindrical glass serum bottle with a simple charcoal dropper cap and a low wide matte ivory glass cream jar with charcoal lid, small spare off-white wordmark \"FORME.\" and only tiny product label \"BALANCE SERUM\" on bottle, \"BARRIER CREAM\" on jar. Bottle proportions refined and substantial. Foreground ivory translucent sheer fabric at bottom, tactile stone. LEFT HALF and upper area remain softly shadowed warm neutral empty space for website text to be overlaid separately. No background text. 85mm medium format photography, restrained editorial art direction, real material textures, no flowers, no leaves, no decorative objects, no watermarks. Colors warm ivory #F1EEE7, charcoal #262722, taupe. Not a website mockup, purely a photograph."
+    },
+    {
+      "name": "serum",
+      "prompt": "Use case: product-mockup. Photorealistic luxury FORME. skincare photography. Package design MUST match reference: matte charcoal cylindrical containers, warm ivory frosted glass for cream, flat charcoal caps, understated small \"FORME.\" wordmark and tiny English product name only. No other text, no watermarks, no extra objects. Warm ivory #F1EEE7, taupe, charcoal #262722. Natural soft directional light with beautiful shadow, tactile matte finish, medium format editorial photograph. Portrait 4:5 catalogue image of ONE Balance Serum 30ml matte charcoal cylindrical dropper bottle, standing centrally on a plain warm ivory surface against warm pale gray background, full bottle with generous margins. Fine cream typography \"FORME.\" and \"BALANCE SERUM\"."
+    },
+    {
+      "name": "cream",
+      "prompt": "Use case: product-mockup. Photorealistic luxury FORME. skincare photography. Package design MUST match reference: matte charcoal cylindrical containers, warm ivory frosted glass for cream, flat charcoal caps, understated small \"FORME.\" wordmark and tiny English product name only. No other text, no watermarks, no extra objects. Warm ivory #F1EEE7, taupe, charcoal #262722. Natural soft directional light with beautiful shadow, tactile matte finish, medium format editorial photograph. Portrait 4:5 catalogue image of ONE Barrier Cream 50ml low broad warm ivory frosted glass jar with flat matte charcoal lid, standing centrally on same plain warm ivory surface against warm pale gray background, full jar and generous margins. Fine charcoal typography \"FORME.\" and \"BARRIER CREAM\"."
+    },
+    {
+      "name": "cleanser",
+      "prompt": "Use case: product-mockup. Photorealistic luxury FORME. skincare photography. Package design MUST match reference: matte charcoal cylindrical containers, warm ivory frosted glass for cream, flat charcoal caps, understated small \"FORME.\" wordmark and tiny English product name only. No other text, no watermarks, no extra objects. Warm ivory #F1EEE7, taupe, charcoal #262722. Natural soft directional light with beautiful shadow, tactile matte finish, medium format editorial photograph. Portrait 4:5 catalogue image of ONE Daily Cleanser 200ml tall matte charcoal cylindrical pump bottle, minimalist short charcoal pump, standing centrally on same plain warm ivory surface against warm pale gray background, full bottle generous margins. Fine cream typography \"FORME.\" and \"DAILY CLEANSER\"."
+    },
+    {
+      "name": "toner",
+      "prompt": "Use case: product-mockup. Photorealistic luxury FORME. skincare photography. Package design MUST match reference: matte charcoal cylindrical containers, warm ivory frosted glass for cream, flat charcoal caps, understated small \"FORME.\" wordmark and tiny English product name only. No other text, no watermarks, no extra objects. Warm ivory #F1EEE7, taupe, charcoal #262722. Natural soft directional light with beautiful shadow, tactile matte finish, medium format editorial photograph. Portrait 4:5 catalogue image of ONE Essence Toner 150ml tall matte charcoal cylindrical bottle with simple flat cylinder charcoal screw cap, standing centrally on same plain warm ivory surface against warm pale gray background, full bottle generous margins. Fine cream typography \"FORME.\" and \"ESSENCE TONER\"."
+    },
+    {
+      "name": "philosophy",
+      "prompt": "Luxury FORME. contemporary skincare brand editorial photograph, medium format realism, restrained architectural minimalism, warm ivory limestone, mineral taupe and charcoal neutral palette, natural side lighting, believable tactile texture. No decorative lettering, no watermarks. Use case: product-mockup. Portrait 4:5 still life: one matte charcoal cylindrical serum dropper bottle with subtle small ivory \"FORME.\" wordmark on a large monolithic worn pale limestone pedestal; tall architectural shadows cut across wall, negative space above, quiet art gallery atmosphere. Bottle matches supplied reference."
+    },
+    {
+      "name": "texture-serum",
+      "prompt": "Luxury FORME. contemporary skincare brand editorial photograph, medium format realism, restrained architectural minimalism, warm ivory limestone, mineral taupe and charcoal neutral palette, natural side lighting, believable tactile texture. No decorative lettering, no watermarks. Use case: photorealistic-natural. Landscape 4:3 extreme macro of one transparent amber tinted viscous serum droplet suspended from a clear glass pipette over ivory glass surface with a small clear pool. Beautiful translucent refraction and tactile golden fluid, dramatic side sun, sophisticated beauty science art photograph, no text, no containers."
+    },
+    {
+      "name": "texture-cream",
+      "prompt": "Luxury FORME. contemporary skincare brand editorial photograph, medium format realism, restrained architectural minimalism, warm ivory limestone, mineral taupe and charcoal neutral palette, natural side lighting, believable tactile texture. No decorative lettering, no watermarks. Use case: photorealistic-natural. Portrait 4:5 extreme macro of one sculptural thick ivory cream smear on a warm taupe stone surface, smooth ridge with fine tactile texture, shadow and side daylight, minimal luxury editorial, no text no containers."
+    },
+    {
+      "name": "ritual",
+      "prompt": "Luxury FORME. contemporary skincare brand editorial photograph, medium format realism, restrained architectural minimalism, warm ivory limestone, mineral taupe and charcoal neutral palette, natural side lighting, believable tactile texture. No decorative lettering, no watermarks. Use case: product-mockup. Landscape 3:2 horizontal luxury bathroom shelf still life of the FOUR FORMЕ. products spaced in a calm row: charcoal 200ml pump cleanser, tall charcoal 150ml screw cap toner, shorter charcoal 30ml dropper serum, low ivory glass cream jar charcoal lid. Small subtle \"FORME.\" wordmarks. Travertine surface, soft towel at edge, architectural morning sunlight. Match supplied package reference."
+    },
+    {
+      "name": "campaign-main",
+      "prompt": "Photorealistic premium FORME. skincare fashion editorial. Medium format photography, real tactile surfaces, warm ivory and taupe, charcoal, soft directional natural daylight and architectural shadows, sophisticated restrained art direction. No watermarks or decorative text. Portrait 4:5 very close portrait of a Korean woman in her early thirties, natural bare skin with visible pores, a few freckles and fine lines, minimal makeup, slicked back dark hair, wearing simple ivory sleeveless top, eyes closed facing sun, hand resting lightly near jaw, cropped upper chest, calm confident expression. Skin remains real, no plastic skin, no jewellery. Warm taupe plaster backdrop."
+    },
+    {
+      "name": "campaign-detail",
+      "prompt": "Photorealistic premium FORME. skincare fashion editorial. Medium format photography, real tactile surfaces, warm ivory and taupe, charcoal, soft directional natural daylight and architectural shadows, sophisticated restrained art direction. No watermarks or decorative text. Portrait 4:5 editorial beauty detail of a Korean woman early thirties with dark swept back hair, natural skin and fine pores, close crop lower face, neck, shoulder and elegant hand holding small charcoal cylindrical dropper bottle beside collarbone. Small spare ivory \"FORME.\" logo only on bottle. Ivory linen top. Warm daylight soft shadows, authentic anatomy, no jewellery, no heavy retouch."
+    },
+    {
+      "name": "formula",
+      "prompt": "Photorealistic premium FORME. skincare fashion editorial. Medium format photography, real tactile surfaces, warm ivory and taupe, charcoal, soft directional natural daylight and architectural shadows, sophisticated restrained art direction. No watermarks or decorative text. Landscape 4:3 macro still life of clear laboratory glass petri dishes and transparent water droplets on warm ivory stone with translucent glass block, sharp beautiful light refractions, simple careful composition, luxury skincare materials study, no plants, no text."
+    },
+    {
+      "name": "journal-routine",
+      "prompt": "Photorealistic premium FORME. skincare fashion editorial. Medium format photography, real tactile surfaces, warm ivory and taupe, charcoal, soft directional natural daylight and architectural shadows, sophisticated restrained art direction. No watermarks or decorative text. Landscape 4:3 luxury bathroom lifestyle still life of neatly folded ivory towel, sculptural cream soap and clear glass bowl of water on travertine counter, pale sunlight and gentle shadow. No products with labels, no text."
+    },
+    {
+      "name": "journal-object",
+      "prompt": "Photorealistic premium FORME. skincare fashion editorial. Medium format photography, real tactile surfaces, warm ivory and taupe, charcoal, soft directional natural daylight and architectural shadows, sophisticated restrained art direction. No watermarks or decorative text. Landscape 4:3 interior still life: a single matte charcoal skincare dropper bottle with small understated ivory \"FORME.\" logo next to a sculptural offwhite ceramic vase and closed art book on limestone shelf, architectural beige room, sophisticated quiet everyday object study."
+    },
+    {
+      "name": "journal-self",
+      "prompt": "Photorealistic premium FORME. skincare fashion editorial. Medium format photography, real tactile surfaces, warm ivory and taupe, charcoal, soft directional natural daylight and architectural shadows, sophisticated restrained art direction. No watermarks or decorative text. Landscape 4:3 editorial close crop of an early thirties East Asian woman natural dark hair viewed from side and behind, soft profile in an oval mirror in minimal ivory bedroom, natural skin, cream cotton shirt, morning daylight, contemplative confident mood, authentic facial anatomy, no text."
+    }
+  ]
+}

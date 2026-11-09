@@ -1,0 +1,117 @@
+// DOM logic tests only: these do not verify rendering or native browser focus behavior.
+// Install test tools under outputs/qa, leaving the website dependency-free.
+import { JSDOM } from '../outputs/qa/node_modules/jsdom/lib/api.js';
+import * as csstree from '../outputs/qa/node_modules/css-tree/lib/index.js';
+import { readFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const root = new URL('../',import.meta.url);
+const html = await readFile(new URL('index.html',root),'utf8');
+const source = await readFile(new URL('js/main.js',root),'utf8');
+for(const file of ['css/style.css','css/responsive.css']) {
+  const css = await readFile(new URL(file,root),'utf8');
+  const errors=[];
+  csstree.parse(css,{onParseError:error=>errors.push(error)});
+  assert.equal(errors.length,0,`${file} CSS syntax`);
+}
+const tick = () => new Promise(resolve=>setImmediate(resolve));
+async function fixture(reduced=false, animated=false) {
+  const dom = new JSDOM(html,{url:'http://localhost/forme/index.html',runScripts:'outside-only',pretendToBeVisual:true});
+  const {window:w} = dom;
+  const media = new Map();
+  w.matchMedia=query=>{
+    if(!media.has(query))media.set(query,{matches:query.includes('reduced-motion')?reduced:false,addEventListener(){}});
+    return media.get(query);
+  };
+  const pending = new Map();
+  w.Image = class {
+    set src(value) {this.path=value;}
+    decode() {return new Promise((resolve,reject)=>pending.set(this.path,{resolve,reject}));}
+  };
+  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
+  w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'));};
+  const animations=[];
+  if(animated)w.HTMLElement.prototype.animate=function(){
+    let finish,cancel;
+    const finished=new Promise((resolve,reject)=>{finish=resolve;cancel=()=>reject(new Error('cancelled'));});
+    const animation={finished,finish,cancel};animations.push(animation);return animation;
+  };
+  w.eval(source);
+  return {dom,w,d:w.document,pending,animations};
+}
+const a=await fixture(true);
+const {d,w}=a;
+assert.ok(d.querySelector('.site-header').classList.contains('header--overlay'));
+w.scrollY=48;w.dispatchEvent(new w.Event('scroll'));
+assert.equal(d.querySelector('.site-header').classList.contains('header--overlay'),false);
+w.scrollY=0;w.dispatchEvent(new w.Event('scroll'));
+assert.ok(d.querySelector('.site-header').classList.contains('header--overlay'));
+for(const card of d.querySelectorAll('.product-card')) {
+  const button=card.querySelector('.card-trigger');button.click();
+  assert.ok(d.querySelector('dialog').open);
+  assert.equal(d.querySelector('#dialog-title').textContent,button.textContent);
+  assert.ok(d.querySelector('.dialog-disclaimer').textContent.includes('구매·장바구니·결제를 지원하지 않습니다'));
+  d.querySelector('.dialog-close').click();assert.equal(d.activeElement,button);
+}
+for(const card of d.querySelectorAll('.journal-card')) {
+  const button=card.querySelector('.card-trigger');button.click();
+  assert.equal(d.querySelector('#dialog-title').textContent,button.textContent);
+  d.querySelector('.dialog-close').click();
+}
+const buttons=[...d.querySelectorAll('[data-step]')];
+for(const button of buttons) {
+  button.click();
+  a.pending.get(`assets/images/${button.dataset.ritualProduct}.jpg`).resolve();await tick();
+  assert.equal(d.querySelectorAll('[data-step][aria-expanded="true"]').length,1);
+  assert.equal(d.querySelectorAll('.step-content:not([hidden])').length,1);
+  assert.ok(d.querySelector('#ritual-image').src.endsWith(`${button.dataset.ritualProduct}.jpg`));
+  assert.equal(d.querySelectorAll('.ritual-image-stage img').length,1);
+  const link=d.getElementById(button.getAttribute('aria-controls')).querySelector('[data-product]');
+  assert.equal(link.dataset.product,button.dataset.ritualProduct);
+}
+buttons[0].focus();buttons[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true}));
+assert.equal(d.activeElement,buttons[3]);
+buttons[3].dispatchEvent(new w.KeyboardEvent('keydown',{key:'Home',bubbles:true}));assert.equal(d.activeElement,buttons[0]);
+buttons[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'End',bubbles:true}));assert.equal(d.activeElement,buttons[3]);
+for(const key of ['account','cart']) {
+  const trigger=d.querySelector(`[data-info="${key}"]`);trigger.click();
+  assert.ok(d.querySelector('dialog').open);
+  d.querySelector('.dialog-close').click();assert.equal(d.activeElement,trigger);
+}
+const search=d.querySelector('[data-search]');search.click();
+const input=d.querySelector('#product-search');input.value='세럼';input.dispatchEvent(new w.Event('input'));
+assert.equal(d.querySelectorAll('[data-search-result]:not([hidden])').length,1);
+d.querySelector('[data-search-result="serum"]').click();
+assert.equal(d.querySelector('#dialog-title').textContent,'Balance Serum');
+d.querySelector('.dialog-close').click();assert.equal(d.activeElement,search);
+search.click();d.querySelector('#product-search').value='없는상품';d.querySelector('#product-search').dispatchEvent(new w.Event('input'));
+assert.equal(d.querySelectorAll('[data-search-result]:not([hidden])').length,0);
+assert.equal(d.querySelector('#search-status').textContent,'검색 결과가 없습니다.');
+d.querySelector('.dialog-close').click();
+assert.equal(d.querySelector('.menu-toggle'),null);
+a.dom.window.close();
+
+// Deliberately resolve old image requests after newer requests.
+const b=await fixture(true);
+const steps=[...b.d.querySelectorAll('[data-step]')];
+steps[1].click();steps[2].click();
+b.pending.get('assets/images/serum.jpg').resolve();await tick();
+b.pending.get('assets/images/toner.jpg').resolve();await tick();
+assert.ok(b.d.querySelector('#ritual-image').src.endsWith('serum.jpg'));
+assert.equal(steps[2].getAttribute('aria-expanded'),'true');
+// On image failure, restore the product that is actually displayed.
+steps[3].click();b.pending.get('assets/images/cream.jpg').reject(new Error('image unavailable'));await tick();
+assert.equal(steps[2].getAttribute('aria-expanded'),'true');
+assert.equal(b.d.querySelector('#ritual-image-stage').getAttribute('aria-busy'),'false');
+b.dom.window.close();
+
+// Rapid clicks also cancel the previous fade and eventually leave one image.
+const c=await fixture(false,true);
+const controls=[...c.d.querySelectorAll('[data-step]')];
+controls[1].click();c.pending.get('assets/images/toner.jpg').resolve();await tick();
+controls[3].click();c.pending.get('assets/images/cream.jpg').resolve();await tick();
+c.animations.at(-1).finish();await tick();
+assert.ok(c.d.querySelector('#ritual-image').src.endsWith('cream.jpg'));
+assert.equal(c.d.querySelectorAll('.ritual-image-stage img').length,1);
+c.dom.window.close();
+console.log('PASS: CSS syntax, product/journal/account/cart dialogs, search filtering and focus restoration, step/product/image mapping, single open panel, keyboard navigation, out-of-order image loads, failed image recovery, cancelled fades, reduced-motion path.');
+console.log('DOM simulation only; browser rendering, native modal behavior and visual/touch-target verification remain unverified.');
