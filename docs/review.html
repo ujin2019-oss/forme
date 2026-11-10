@@ -9,10 +9,10 @@
 </head>
 <body>
 <h1>FORME. 반응형·기능 검수</h1>
-<p>1440 · 1280 · 1024 · 768 · 430 · 390 · 360px의 실제 iframe 뷰포트입니다. 이 화면을 HTTP 서버에서 열면 각 검사가 실행됩니다. PASS는 자동 검사 범위의 결과이며, 이미지 크롭·텍스트 대비·키보드와 터치의 실제 사용성은 별도로 시각 검수하세요. 휴대폰의 가로 화면·짧은 화면과 텍스트 확대도 추가 확인하세요.</p>
+<p>1920 · 1440 · 1280 · 1024 · 768 · 430 · 390 · 360px의 실제 iframe 뷰포트입니다. 이 화면을 HTTP 서버에서 열면 각 검사가 실행됩니다. PASS는 자동 검사 범위의 결과이며, 이미지 크롭·텍스트 대비·키보드와 터치의 실제 사용성은 별도로 시각 검수하세요. 휴대폰의 가로 화면·짧은 화면과 텍스트 확대도 추가 확인하세요.</p>
 <nav aria-label="검수 섹션" id="sections"></nav><main></main>
 <script>
-const sizes=[[1440,960,.38],[1280,900,.4],[1024,900,.4],[768,1024,.48],[430,932,.9],[390,844,.9],[360,800,.9]];
+const sizes=[[1920,1080,.29],[1440,960,.38],[1280,900,.4],[1024,900,.4],[768,1024,.48],[430,932,.9],[390,844,.9],[360,800,.9]];
 const sections=[['HERO','.hero'],['PHILOSOPHY','#philosophy'],['ESSENTIALS','#essentials'],['TEXTURE','#texture'],['RITUAL','#ritual'],['CAMPAIGN','#campaign'],['FORMULA','#formula'],['JOURNAL','#journal'],['CLOSING','.closing']];
 const nextFrame=win=>new Promise(resolve=>win.requestAnimationFrame(()=>resolve()));
 for(const [label,selector] of sections){
@@ -33,6 +33,9 @@ async function audit(frame,card,width){
   const doc=frame.contentDocument,win=frame.contentWindow,output=[];
   const check=(name,condition)=>output.push({name,passed:Boolean(condition)});
   await doc.fonts.ready;
+  const dmFaces=[...doc.fonts].filter(face=>face.family.replace(/["']/g,'')==='DM Sans');
+  check('로컬 DM Sans 로드',dmFaces.some(face=>face.status==='loaded')&&doc.fonts.check('400 16px "DM Sans"','Beauty in its own form.'));
+  check('로고 DM Sans 적용',[...doc.querySelectorAll('.wordmark,.closing-wordmark')].every(item=>win.getComputedStyle(item).fontFamily.includes('DM Sans')));
   const style=doc.createElement('style');
   style.textContent='html{scroll-behavior:auto!important}.reveal{opacity:1!important;transform:none!important}';
   doc.head.append(style);
@@ -81,7 +84,7 @@ async function audit(frame,card,width){
     const touchTargets=doc.querySelectorAll('.header-icon,.desktop-nav a,.hero-cta,.hero-bottom a,[data-step],.step-content .text-link');
     check('보이는 주요 터치 영역 44px 이상',[...touchTargets].filter(item=>item.getClientRects().length).every(item=>{const rect=item.getBoundingClientRect();return rect.width>=44&&rect.height>=44;}));
   }else{
-    check('PC 제품 4열',win.getComputedStyle(doc.querySelector('.product-grid')).gridTemplateColumns.split(' ').length===4);
+    check('PC 제품 2×2',win.getComputedStyle(doc.querySelector('.product-grid')).gridTemplateColumns.split(' ').length===2);
     check('PC 저널 3열',win.getComputedStyle(doc.querySelector('.journal-grid')).gridTemplateColumns.split(' ').length===3);
   }
   const overflow=[...doc.querySelectorAll('main h1,main h2,main h3,.product-card,.journal-card')].filter(item=>{

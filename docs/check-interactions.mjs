@@ -29,6 +29,10 @@ async function fixture(reduced=false, animated=false) {
   };
   w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
   w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'));};
+  const layout={heroHeight:900};
+  w.document.querySelector('.hero').getBoundingClientRect=()=>({top:-w.scrollY,bottom:layout.heroHeight-w.scrollY});
+  const scrollCalls=[];
+  w.scrollTo=options=>scrollCalls.push(options);
   const animations=[];
   if(animated)w.HTMLElement.prototype.animate=function(){
     let finish,cancel;
@@ -36,15 +40,47 @@ async function fixture(reduced=false, animated=false) {
     const animation={finished,finish,cancel};animations.push(animation);return animation;
   };
   w.eval(source);
-  return {dom,w,d:w.document,pending,animations};
+  return {dom,w,d:w.document,pending,animations,layout,scrollCalls};
 }
 const a=await fixture(true);
 const {d,w}=a;
 assert.ok(d.querySelector('.site-header').classList.contains('header--overlay'));
+assert.equal(d.querySelector('.site-header').classList.contains('header--compact'),false);
+const topButton=d.querySelector('.back-to-top');
+assert.ok(topButton.hidden,'Hidden while hero is visible');
+w.scrollY=899;w.dispatchEvent(new w.Event('scroll'));
+assert.ok(topButton.hidden,'Hidden with even one pixel of hero remaining');
+w.scrollY=900;w.dispatchEvent(new w.Event('scroll'));
+assert.equal(topButton.hidden,false,'Shown after leaving hero');
+a.layout.heroHeight=1200;w.dispatchEvent(new w.Event('resize'));
+assert.ok(topButton.hidden,'Resize rechecks the actual hero boundary');
+a.layout.heroHeight=900;w.dispatchEvent(new w.Event('resize'));
+assert.equal(topButton.hidden,false);
+topButton.click();
+assert.equal(a.scrollCalls.at(-1).top,0);
+assert.equal(a.scrollCalls.at(-1).behavior,'auto','Respect reduced motion');
+assert.equal(d.activeElement,d.querySelector('.wordmark'),'Return keyboard focus to the header');
+w.scrollY=850;w.dispatchEvent(new w.Event('scroll'));
+assert.ok(topButton.hidden,'Hide on reentering hero');
+w.scrollY=1000;w.dispatchEvent(new w.Event('pageshow'));
+assert.equal(topButton.hidden,false,'Restore on history navigation');
+w.scrollY=0;w.dispatchEvent(new w.Event('pageshow'));
+assert.ok(topButton.hidden);
+w.scrollY=24;w.dispatchEvent(new w.Event('scroll'));
+assert.ok(d.querySelector('.site-header').classList.contains('header--overlay'));
+w.scrollY=25;w.dispatchEvent(new w.Event('scroll'));
+assert.ok(d.querySelector('.site-header').classList.contains('header--compact'));
+assert.ok(d.documentElement.classList.contains('header-is-scrolled'));
 w.scrollY=48;w.dispatchEvent(new w.Event('scroll'));
 assert.equal(d.querySelector('.site-header').classList.contains('header--overlay'),false);
 w.scrollY=0;w.dispatchEvent(new w.Event('scroll'));
 assert.ok(d.querySelector('.site-header').classList.contains('header--overlay'));
+assert.equal(d.querySelector('.site-header').classList.contains('header--compact'),false);
+assert.equal(d.documentElement.classList.contains('header-is-scrolled'),false);
+w.scrollY=200;w.dispatchEvent(new w.Event('pageshow'));
+assert.ok(d.querySelector('.site-header').classList.contains('header--compact'),'Restore compact header on history navigation');
+w.scrollY=0;w.dispatchEvent(new w.Event('pageshow'));
+assert.equal(d.querySelector('.site-header').classList.contains('header--compact'),false);
 for(const card of d.querySelectorAll('.product-card')) {
   const button=card.querySelector('.card-trigger');button.click();
   assert.ok(d.querySelector('dialog').open);
@@ -125,6 +161,9 @@ controls[3].click();c.pending.get('assets/images/cream.jpg').resolve();await tic
 c.animations.at(-1).finish();await tick();
 assert.ok(c.d.querySelector('#ritual-image').src.endsWith('cream.jpg'));
 assert.equal(c.d.querySelectorAll('.ritual-image-stage img').length,1);
+c.w.scrollY=900;c.w.dispatchEvent(new c.w.Event('scroll'));
+c.d.querySelector('.back-to-top').click();
+assert.equal(c.scrollCalls.at(-1).behavior,'smooth','Smooth scroll when motion is allowed');
 c.dom.window.close();
 
 // A failed request during an earlier fade must leave a single matching image.

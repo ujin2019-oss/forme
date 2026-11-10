@@ -7,7 +7,7 @@ import * as css from '../outputs/qa/node_modules/css-tree/lib/index.js';
 const root=new URL('../',import.meta.url);
 const dom=new JSDOM(await readFile(new URL('index.html',root),'utf8'));
 const sheets=await Promise.all(['css/style.css','css/responsive.css'].map(async file=>css.parse(await readFile(new URL(file,root),'utf8'))));
-const widths=[1440,1280,1024,768,430,390,360];
+const widths=[1920,1440,1280,1024,768,430,390,360];
 function mediaMatches(query,width){
   // All current width queries are conjunctions. Reduced-motion rules are tested separately.
   if(query.includes('prefers-reduced-motion'))return false;
@@ -49,7 +49,23 @@ function declarations(element,width){
 for(const width of widths){
   const style=selector=>declarations(dom.window.document.querySelector(selector),width);
   const mobile=width<768;
-  assert.equal(style('.product-grid')['grid-template-columns'],mobile?'repeat(2,minmax(0,1fr))':'repeat(4,minmax(0,1fr))');
+  assert.ok(style('html')['--font'].includes('DM Sans'));
+  assert.ok(style('.wordmark')['font-family'].includes('DM Sans'));
+  assert.ok(style('.closing-wordmark')['font-family'].includes('DM Sans'));
+  assert.equal(style('.hero h1')['letter-spacing'],'-.045em');
+  assert.equal(style('.hero h1')['line-height'],'1.06');
+  assert.equal(style('.product-name h3')['font-weight'],'500');
+  assert.equal(style('.product-card .price')['font-weight'],'500');
+  assert.ok(style('.product-description')['font-family'].includes('Pretendard'));
+  assert.equal(style('.product-description')['font-weight'],'400');
+  assert.equal(style('.back-to-top').position,'fixed');
+  assert.equal(style('.back-to-top').width,mobile?'44px':'48px');
+  assert.equal(style('.back-to-top').height,mobile?'44px':'48px');
+  assert.equal(style('.philosophy').width,style('.essentials>.container').width);
+  assert.equal(style('.philosophy')['max-width'],style('.essentials>.container')['max-width']);
+  assert.equal(style('.product-grid')['grid-template-columns'],'repeat(2,minmax(0,1fr))');
+  assert.equal(style('.essentials .section-heading')['text-align'],'center');
+  assert.equal(style('.essentials .section-heading')['align-items'],'center');
   assert.equal(style('.journal-grid')['grid-template-columns'],mobile?'minmax(0,1fr)':'repeat(3,minmax(0,1fr))');
   assert.equal(style('.product-description')['-webkit-line-clamp'],'2');
   assert.equal(style('.ritual-summary').display,mobile?'block':'none');
@@ -65,7 +81,20 @@ for(const width of widths){
     assert.equal(style('.hero-image')['object-fit'],'cover');
     assert.match(style('.hero-image')['object-position'],/^84%\s*bottom$/);
   }
-  console.log(`PASS static cascade ${width}px: products ${mobile?2:4} columns, journal ${mobile?1:3} columns, summary ${mobile?'visible':'hidden'}${mobile?', type sizes and header targets checked':''}`);
+  const header=dom.window.document.querySelector('.site-header');
+  header.classList.remove('header--overlay');
+  header.classList.add('header--compact');
+  dom.window.document.documentElement.classList.add('header-is-scrolled');
+  assert.equal(style('html')['--header-compact'],mobile?'96px':width<=1100?'72px':'76px');
+  assert.equal(style('.site-header').height,'var(--header-compact)');
+  assert.equal(style('.site-header').background,'#fff');
+  assert.equal(style('.wordmark')['font-size'],mobile?'26px':'34px');
+  assert.ok(style('html')['scroll-padding-top'].includes('--header-compact'));
+  if(mobile)assert.equal(style('.desktop-nav a')['line-height'],'44px');
+  header.classList.remove('header--compact');
+  header.classList.add('header--overlay');
+  dom.window.document.documentElement.classList.remove('header-is-scrolled');
+  console.log(`PASS static cascade ${width}px: products 2 columns, essentials heading centered, journal ${mobile?1:3} columns, summary ${mobile?'visible':'hidden'}${mobile?', type sizes and header targets checked':''}`);
 }
 dom.window.close();
 console.log('NOT VERIFIED: horizontal overflow, actual text wrapping/crop/contrast, browser focus and native Enter/Space. Use docs/review.html for rendering checks.');

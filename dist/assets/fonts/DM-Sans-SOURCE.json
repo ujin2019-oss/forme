@@ -1,0 +1,39 @@
+{
+  "family": "DM Sans",
+  "downloaded": "2026-11-10",
+  "cssSource": "https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap",
+  "metadataSource": "https://github.com/google/fonts/blob/main/ofl/dmsans/METADATA.pb",
+  "licenseSource": "https://github.com/google/fonts/blob/main/ofl/dmsans/OFL.txt",
+  "files": [
+    {
+      "file": "DMSansVariable-LatinExt.woff2",
+      "subset": "latin-ext",
+      "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2Hp2ywxg089UriCZ2IHSeH.woff2",
+      "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+      "bytes": 31292,
+      "sha256": "5d18d31d23ada61ebee1d589b11d5da30db9e158f589d5e35221ba2b1a45de54"
+    },
+    {
+      "file": "DMSansVariable.woff2",
+      "subset": "latin",
+      "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2Hp2ywxg089UriCZOIHQ.woff2",
+      "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+      "bytes": 62724,
+      "sha256": "ca72d2bcea8f4daa783dbdfa2d9b46068c3ce38168e05918fb867aa453b4f890"
+    }
+  ],
+  "fontVersion": "4.004",
+  "axes": {
+    "wght": {
+      "min": 100,
+      "default": 400,
+      "max": 1000
+    },
+    "opsz": {
+      "min": 9,
+      "default": 9,
+      "max": 40
+    }
+  },
+  "license": "SIL Open Font License 1.1"
+}

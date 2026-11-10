@@ -3,21 +3,18 @@
 }
 
 @media (max-width:1100px) {
-  :root { --header:96px; --gutter:32px; }
+  :root { --header:96px; --header-compact:72px; --gutter:32px; }
   .desktop-nav { gap:24px; }
   .desktop-nav a { font-size:13px; }
   .header-actions { gap:4px; }
-  .philosophy-grid { gap:7%; grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
   .philosophy-copy h2 { font-size:45px; }
-  .philosophy-copy h3 { font-size:24px; }
-  .philosophy-copy p:not(.eyebrow) { font-size:15px; }
+  .philosophy-copy p { font-size:15px; }
   .product-grid { gap:18px; }
   .product-name { align-items:flex-start; flex-direction:column; gap:5px; }
   .product-name h3 { font-size:18px; }
   .product-name>span { font-size:12px; }
   .product-description { font-size:13px; }
   .texture-grid { gap:6%; }
-  .texture-heading>p { margin-right:0; }
   .ritual-layout { grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:6%; }
   .ritual-image-stage { height:510px; }
   .ritual-caption { padding:16px 18px; font-size:12px; }
@@ -41,16 +38,18 @@
   .journal-card h3 { font-size:20px; }
   .journal-card>p:last-child { font-size:14px; }
   .journal-meta { flex-wrap:wrap; font-size:11px; }
-  .journal .section-heading>.eyebrow { display:none; }
   .footer-bottom { flex-wrap:wrap; gap:20px; }
   .footer-bottom>p { flex:1 0 100%; }
   .footer-bottom>a { margin-left:auto; }
 }
 
 @media (max-width:767px) {
-  :root { --gutter:24px; --header:112px; --space:72px; }
+  :root { --gutter:24px; --header:112px; --header-compact:96px; --space:72px; }
   body { font-size:15px; }
-  .header-main { grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); grid-template-rows:64px 48px; }
+  .header-main { grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); grid-template-rows:64px 48px; transition:grid-template-rows .25s ease; }
+  .site-header.header--compact .header-main { grid-template-rows:52px 44px; }
+  .site-header.header--compact .wordmark { font-size:26px; }
+  .site-header.header--compact .desktop-nav a { line-height:44px; }
   .wordmark { font-size:30px; grid-column:2; grid-row:1; }
   .desktop-nav { grid-column:1/-1; grid-row:2; justify-self:stretch; justify-content:center; gap:32px; border-top:1px solid var(--line); }
   .desktop-nav a { font-size:12px; line-height:48px; min-width:44px; text-align:center; }
@@ -66,7 +65,7 @@
   .hero::after { inset:0; height:auto; z-index:-1; background:linear-gradient(to bottom,rgba(25,23,18,.16),transparent 48%); }
   .hero-content { position:absolute; inset:calc(var(--header) + 24px) var(--gutter) auto; transform:none; padding:0; }
   .hero-content .eyebrow { font-size:10px; margin-bottom:12px; }
-  .hero h1 { font-size:clamp(48px,13vw,62px); line-height:1.03; margin-bottom:16px; letter-spacing:-.065em; }
+  .hero h1 { font-size:clamp(48px,13vw,62px); line-height:1.06; margin-bottom:16px; letter-spacing:-.045em; }
   .hero-korean { font-size:14px; }
   .hero .text-link { margin-top:16px; font-size:14px; min-width:160px; min-height:44px; }
   .hero-bottom { position:absolute; inset:auto var(--gutter) 14px; padding:0; font-size:9px; gap:16px; }
@@ -79,29 +78,23 @@
   .section-heading h2 { margin-bottom:18px; }
   .section-heading p { font-size:15px; line-height:1.7; }
   .section-heading>.text-link { min-width:180px; }
-  .philosophy-grid { grid-template-columns:minmax(0,1fr); gap:32px; }
-  .philosophy-image { width:90%; }
-  .philosophy-image img { aspect-ratio:1; }
-  .philosophy-image figcaption { font-size:10px; padding-top:12px; }
-  .philosophy-copy { padding:0; }
-  .philosophy-copy .eyebrow { font-size:10px; margin-bottom:20px; }
-  .philosophy-copy h2 { font-size:clamp(39px,10vw,60px); margin-bottom:26px; }
-  .philosophy-copy h3 { font-size:25px; margin-bottom:22px; }
-  .philosophy-copy p:not(.eyebrow) { font-size:15px; line-height:1.7; max-width:none; margin-bottom:16px; }
-  .philosophy-copy .text-link { margin-top:8px; }
+  .philosophy-copy { margin-bottom:28px; }
+  .philosophy-copy h2 { font-size:clamp(39px,10vw,60px); margin-bottom:20px; }
+  .philosophy-image img { aspect-ratio:3/2; }
 
   .product-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:44px 16px; }
+  .philosophy.container,.essentials>.container { width:84%; }
   .product-card { display:flex; flex-direction:column; }
-  .product-image { aspect-ratio:4/5; }
+  .product-image { aspect-ratio:1; }
   .product-category { font-size:10px; top:12px; left:10px; letter-spacing:.01em; }
   .product-open { right:12px; bottom:12px; font-size:20px; }
   .product-discover { display:none; }
   .product-name { margin-top:14px; gap:4px; }
-  .product-name h3 { font-size:16px; font-weight:600; letter-spacing:-.035em; line-height:1.5; }
+  .product-name h3 { font-size:16px; font-weight:500; letter-spacing:-.025em; line-height:1.5; }
   .product-name button { overflow-wrap:anywhere; }
   .product-name>span { font-size:12px; }
   .product-description { font-size:14px; margin-top:8px; line-height:1.6; min-height:3.2em; margin-bottom:0; }
-  .product-card .price { font-size:15px; font-weight:600; color:var(--charcoal); margin-top:auto; padding-top:12px; line-height:1.5; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .product-card .price { font-size:15px; font-weight:500; color:var(--charcoal); margin-top:auto; padding-top:12px; line-height:1.5; white-space:nowrap; font-variant-numeric:tabular-nums; }
   .demo-note { font-size:12px; margin-top:28px; line-height:1.7; }
 
   .texture-heading { display:block; margin-bottom:32px; }
@@ -115,17 +108,16 @@
   .texture-grid figcaption { font-size:11px; padding-top:12px; gap:5px; flex-direction:column; }
   .texture-note { font-size:14px; line-height:1.7; margin-top:32px; }
 
-  .small-copy { text-align:left; font-size:14px!important; }
   .ritual .section-heading { gap:16px; }
   .ritual-layout { grid-template-columns:minmax(0,1fr); gap:20px; }
   .ritual-image-stage { height:clamp(260px,76vw,380px); }
   .ritual-caption { display:grid; grid-template-columns:auto minmax(0,1fr); padding:16px; font-size:12px; gap:8px 12px; align-items:baseline; }
   #ritual-number { color:var(--muted); font-variant-numeric:tabular-nums; }
-  #ritual-product { font-size:16px; font-weight:600; justify-self:end; }
+  #ritual-product { font-size:16px; font-weight:500; justify-self:end; }
   .ritual-summary { display:block; grid-column:1/-1; min-height:4.95em; font-size:14px; line-height:1.65; color:var(--muted); }
   .ritual-step h3 button { padding:20px 0; font-size:24px; gap:20px; min-height:76px; }
   .ritual-step.active { padding-inline:14px; margin-inline:-14px; }
-  .ritual-step.active .step-name { font-weight:600; }
+  .ritual-step.active .step-name { font-weight:500; }
   .ritual-step.active .step-number { font-weight:600; }
   .step-content { padding:0 0 20px 34px; }
   /* The selected description is shown once, directly beneath the product image. */
@@ -181,6 +173,7 @@
   .footer-bottom>p { font-size:12px; }
   .footer-bottom>button,.footer-bottom>a { min-height:48px; }
 
+  .back-to-top { right:max(16px,env(safe-area-inset-right)); bottom:max(16px,env(safe-area-inset-bottom)); width:44px; height:44px; }
   .detail-dialog { width:calc(100% - 24px); max-height:92svh; padding:62px 22px 28px; }
   .dialog-close { right:22px; font-size:14px; }
   .dialog-product { grid-template-columns:minmax(0,1fr); gap:25px; }

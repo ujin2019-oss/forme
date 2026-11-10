@@ -1,4 +1,20 @@
 @font-face{
+  font-family:'DM Sans';
+  src:url('../assets/fonts/DMSansVariable-LatinExt.woff2') format('woff2');
+  font-style:normal;
+  font-weight:100 1000;
+  font-display:swap;
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+
+@font-face{
+  font-family:'DM Sans';
+  src:url('../assets/fonts/DMSansVariable.woff2') format('woff2');
+  font-style:normal;
+  font-weight:100 1000;
+  font-display:swap;
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+
+@font-face{
   font-family:Inter;
   src:url('../assets/fonts/InterVariable.woff2') format('woff2');
   font-style:normal;
@@ -21,8 +37,9 @@
   --bronze:#a18b77;
   --line:rgba(38,39,34,.2);
   --muted:#615f57;
-  --font:'Inter','Pretendard',sans-serif;
+  --font:'DM Sans','Pretendard',sans-serif;
   --header:112px;
+  --header-compact:76px;
   --gutter:clamp(24px,4.2vw,64px);
   --space:clamp(88px,10vw,150px)}
 
@@ -31,6 +48,8 @@
 html{
   scroll-behavior:smooth;
   scroll-padding-top:calc(var(--header) + 24px)}
+html.header-is-scrolled{
+  scroll-padding-top:calc(var(--header-compact) + 24px)}
 body{
   margin:0;
   background:var(--ivory);
@@ -38,7 +57,8 @@ body{
   font-family:var(--font);
   font-size:16px;
   line-height:1.7;
-  -webkit-font-smoothing:antialiased}
+  -webkit-font-smoothing:antialiased;
+  font-optical-sizing:auto}
 body.locked{
   overflow:hidden}
 button,a{
@@ -72,7 +92,7 @@ h1,h2,h3{
   font-weight:400}
 h2{
   font-size:clamp(44px,4.9vw,72px);
-  letter-spacing:-.055em;
+  letter-spacing:-.035em;
   line-height:1.08}
 h3{
   font-size:22px;
@@ -136,9 +156,13 @@ p{
   inset:0 0 auto;
   z-index:20;
   height:var(--header);
-  background:var(--ivory);
+  background:#fff;
   color:var(--charcoal);
-  transition:transform .35s,background-color .25s,color .25s}
+  transition:height .25s ease,transform .35s,background-color .25s,color .25s}
+.site-header.header--compact{
+  height:var(--header-compact)}
+.site-header.header--compact .wordmark{
+  font-size:34px}
 .site-header.header--overlay{
   background:transparent;
   color:var(--ivory)}
@@ -156,6 +180,7 @@ p{
   align-items:center;
   height:100%}
 .wordmark{
+  font-family:'DM Sans',sans-serif;
   font-size:44px;
   line-height:1;
   font-weight:500;
@@ -164,7 +189,7 @@ p{
   display:flex;
   align-items:center;
   justify-self:center;
-  transition:color .25s}
+  transition:color .25s,font-size .25s ease}
 .desktop-nav{
   display:flex;
   gap:40px;
@@ -283,8 +308,8 @@ p{
 .hero h1{
   font-size:clamp(72px,7.6vw,112px);
   font-weight:400;
-  line-height:1.03;
-  letter-spacing:-.065em;
+  line-height:1.06;
+  letter-spacing:-.045em;
   margin-bottom:30px}
 .hero-korean{
   font-size:17px;
@@ -318,51 +343,40 @@ p{
   min-height:44px}
 .hero-index{
   font-variant-numeric:tabular-nums}
-.philosophy-grid{
-  display:grid;
-  grid-template-columns:6fr 5fr;
-  gap:8.33%;
-  align-items:center}
+.philosophy-copy{
+  text-align:center;
+  margin-bottom:36px}
+.philosophy-copy h2{
+  font-size:clamp(42px,4.5vw,64px);
+  margin-bottom:24px}
+.philosophy-copy p{
+  font-size:16px;
+  line-height:1.7;
+  color:var(--muted)}
 .philosophy-image{
   width:100%}
 .philosophy-image img{
-  aspect-ratio:4/4.7}
-.philosophy-image figcaption{
-  padding-top:16px;
-  font-size:11px}
-.philosophy-copy{
-  padding-bottom:30px}
-.philosophy-copy .eyebrow{
-  margin-bottom:28px;
-  font-size:10px}
-.philosophy-copy h2{
-  font-size:clamp(42px,4.5vw,64px);
-  margin-bottom:38px}
-.philosophy-copy h3{
-  font-family:'Pretendard',sans-serif;
-  font-size:27px;
-  font-weight:500;
-  line-height:1.5;
-  margin-bottom:28px}
-.philosophy-copy p:not(.eyebrow){
-  font-size:16px;
-  line-height:1.7;
-  color:var(--muted);
-  margin-bottom:18px;
-  max-width:34rem}
-.philosophy-copy .text-link{
-  margin-top:24px}
-.essentials{
-  background:#e8e5dd}
+  height:auto;
+  aspect-ratio:2/1;
+  object-position:50% 55%}
+.essentials,.ritual{
+  background:#fff}
+.philosophy.container,.essentials>.container{
+  max-width:960px;
+  width:68%}
+.essentials .section-heading,.ritual .section-heading,.journal .section-heading{
+  justify-content:center;
+  align-items:center;
+  text-align:center}
 .product-grid{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:24px}
 .product-image{
   position:relative;
   display:block;
   width:100%;
-  aspect-ratio:4/5;
+  aspect-ratio:1;
   overflow:hidden;
   background:#e2dfd6}
 .product-image img{
@@ -401,7 +415,8 @@ p{
   margin-top:20px}
 .product-name h3{
   font-size:19px;
-  letter-spacing:-.04em;
+  font-weight:500;
+  letter-spacing:-.025em;
   line-height:1.4}
 .product-name button{
   min-height:0}
@@ -410,6 +425,8 @@ p{
   color:var(--muted);
   white-space:nowrap}
 .product-description{
+  font-family:'Pretendard',sans-serif;
+  font-weight:400;
   font-size:14px;
   color:var(--muted);
   margin-top:9px;
@@ -437,15 +454,16 @@ p{
   color:var(--ivory)}
 .texture-heading{
   display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
+  flex-direction:column;
+  align-items:center;
+  gap:24px;
+  text-align:center;
   margin-bottom:60px}
 .texture-heading h2{
   font-size:clamp(58px,6.5vw,94px)}
 .texture-heading>p{
   font-size:17px;
-  line-height:1.9;
-  margin-right:9%}
+  line-height:1.9}
 .texture-grid{
   display:grid;
   grid-template-columns:7fr 4fr;
@@ -471,9 +489,6 @@ p{
   line-height:1.7;
   color:#c9c3b8;
   margin-top:28px}
-.small-copy{
-  text-align:right;
-  font-size:14px!important}
 .ritual-layout{
   display:grid;
   grid-template-columns:7fr 4fr;
@@ -482,7 +497,7 @@ p{
 .ritual-visual{
   position:relative;
   align-self:start;
-  background:#e8e5dd}
+  background:var(--ivory)}
 .ritual-image-stage{
   position:relative;
   height:clamp(480px,43vw,620px);
@@ -500,9 +515,11 @@ p{
   justify-content:space-between;
   gap:16px;
   font-size:13px;
-  background:#e8e5dd;
+  background:var(--ivory);
   padding:16px 24px;
   min-height:56px}
+#ritual-product{
+  font-weight:500}
 .ritual-summary{
   display:none}
 .ritual-step{
@@ -625,10 +642,7 @@ p{
   color:var(--muted);
   line-height:1.7}
 .journal{
-  background:#e8e5dd}
-.journal .section-heading>.eyebrow{
-  font-size:9px;
-  padding-bottom:5px}
+  background:#fff}
 .journal-grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -691,6 +705,7 @@ p{
   font-size:14px;
   color:#c9c3b8}
 .closing-wordmark{
+  font-family:'DM Sans',sans-serif;
   display:block;
   font-size:clamp(120px,24vw,360px);
   font-weight:500;
@@ -746,6 +761,26 @@ p{
   align-items:center;
   padding-bottom:3px;
   padding:0}
+.back-to-top{
+  position:fixed;
+  right:max(24px,env(safe-area-inset-right));
+  bottom:max(24px,env(safe-area-inset-bottom));
+  z-index:15;
+  display:grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:#fff;
+  color:var(--charcoal);
+  transition:background-color .2s,color .2s}
+.back-to-top svg{
+  width:22px;
+  height:22px}
+.back-to-top:hover{
+  background:var(--charcoal);
+  color:var(--ivory)}
 .detail-dialog{
   color:var(--charcoal);
   background:var(--ivory);
@@ -776,6 +811,7 @@ p{
 .dialog-product>img{
   aspect-ratio:.8}
 .dialog-product h2{
+  font-weight:500;
   font-size:40px;
   margin:15px 0 10px}
 .dialog-product h3{
@@ -787,6 +823,7 @@ p{
   margin-top:16px;
   line-height:1.7}
 .dialog-product .dialog-price{
+  font-weight:500;
   font-size:20px;
   color:var(--charcoal)}
 .dialog-disclaimer{
@@ -870,7 +907,7 @@ to{
   outline:2px solid var(--bronze);
   outline-offset:6px}
 .ritual-step.active{
-  background:#e8e5dd;
+  background:var(--ivory);
   padding-inline:20px;
   margin-inline:-20px}
 .ritual-step.active .step-name{

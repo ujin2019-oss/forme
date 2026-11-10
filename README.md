@@ -26,7 +26,8 @@ node serve.mjs
 - `css/responsive.css`: PC / 태블릿 / 모바일 전환, 375px / 390px 대응
 - `js/main.js`: 제품 상세, 저널 본문, 검색과 안내 모달, 루틴 아코디언·제품 설명 동기화, 키보드 조작, 스크롤 등장
 - `assets/images/`: AI 생성 사진 15개. 원본 PNG와 웹용 JPEG를 보관
-- `assets/fonts/`: Inter / Pretendard 가변 폰트와 각각의 OFL 라이선스
+- `assets/fonts/`: 영문·로고용 DM Sans와 한글 Pretendard 가변 폰트 및 OFL 라이선스. 기존 Inter 원본 보관. DM Sans의 출처·버전·해시는 `DM-Sans-SOURCE.json`에 기록
+- `docs/typography-dm-sans.md`: DM Sans 적용 범위, 로고·한글 보존, 검사 결과와 실화면 미검증 항목
 - `assets/favicon.svg`: 브랜드 이니셜 파비콘
 - `docs/design-notes.md`: 레퍼런스 접근 결과, 디자인 방향, 섹션 설계와 검수 범위
 - `docs/image-prompts.json`: 모든 이미지의 실제 생성 프롬프트

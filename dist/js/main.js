@@ -17,12 +17,24 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let returnFocus = null;
 
 const header = document.querySelector('.site-header');
-function updateHeader() {
-  header.classList.toggle('header--overlay', window.scrollY <= 24);
+const hero = document.querySelector('.hero');
+const backToTop = document.querySelector('.back-to-top');
+function updateScrollState() {
+  const scrolled = window.scrollY > 24;
+  const heroVisible = hero.getBoundingClientRect().bottom > 0;
+  header.classList.toggle('header--overlay', !scrolled);
+  header.classList.toggle('header--compact', scrolled);
+  document.documentElement.classList.toggle('header-is-scrolled', scrolled);
+  backToTop.hidden = heroVisible;
 }
-updateHeader();
-window.addEventListener('scroll', updateHeader, {passive:true});
-window.addEventListener('pageshow', updateHeader);
+updateScrollState();
+window.addEventListener('scroll', updateScrollState, {passive:true});
+window.addEventListener('resize', updateScrollState);
+window.addEventListener('pageshow', updateScrollState);
+backToTop.addEventListener('click', () => {
+  document.querySelector('.wordmark').focus({preventScroll:true});
+  window.scrollTo({top:0,behavior:reducedMotion.matches ? 'auto' : 'smooth'});
+});
 
 function openDialog(html, trigger) {
   returnFocus = trigger;
