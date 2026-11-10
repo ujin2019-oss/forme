@@ -60,20 +60,19 @@
   .header-icon svg { width:20px; height:20px; }
   .header-cart { width:38px; gap:3px; }
   .cart-count { font-size:9px; }
-  .hero { margin-top:0; padding-top:0; }
-
-  /* The header overlays the photograph; copy follows with the complete product crop preserved. */
-  .hero { display:flex; flex-direction:column; height:auto; min-height:0; max-height:none; background:var(--charcoal); }
-  .hero::after { display:block; inset:0 0 auto; height:calc(var(--header) + 48px); z-index:1; background:linear-gradient(to bottom,rgba(25,23,18,.6),transparent); }
-  .hero-content { order:1; position:relative; inset:auto; transform:none; padding:36px var(--gutter) 30px; }
-  .hero-content .eyebrow { font-size:11px; margin-bottom:18px; }
-  .hero h1 { font-size:clamp(49px,13.3vw,76px); line-height:1.05; margin-bottom:22px; letter-spacing:-.065em; }
-  .hero-korean { font-size:15px; }
-  .hero .text-link { margin-top:24px; font-size:14px; min-width:180px; min-height:48px; }
-  .hero-image { order:0; position:relative; inset:auto; z-index:auto; height:auto; aspect-ratio:2/1; object-fit:contain; object-position:center; transform:none; filter:none; }
-  .hero-bottom { order:2; position:static; padding:8px var(--gutter); font-size:10px; gap:16px; }
+  /* One continuous mobile scene: copy above the products, with a feathered photo edge. */
+  .hero { display:block; margin-top:0; padding-top:0; height:min(100svh,740px); min-height:620px; max-height:none; background:#80705e; }
+  .hero-visual { position:absolute; inset:0; z-index:-2; }
+  .hero-image { position:absolute; inset:auto 0 0; width:100%; height:64%; object-fit:cover; object-position:78% bottom; transform:none; filter:none; mask-image:linear-gradient(to bottom,transparent,#000 22%); }
+  .hero::after { inset:0; height:auto; z-index:-1; background:linear-gradient(to bottom,rgba(25,23,18,.16),transparent 48%); }
+  .hero-content { position:absolute; inset:calc(var(--header) + 24px) var(--gutter) auto; transform:none; padding:0; }
+  .hero-content .eyebrow { font-size:10px; margin-bottom:12px; }
+  .hero h1 { font-size:clamp(48px,13vw,62px); line-height:1.03; margin-bottom:16px; letter-spacing:-.065em; }
+  .hero-korean { font-size:14px; }
+  .hero .text-link { margin-top:18px; font-size:13px; min-width:160px; min-height:44px; }
+  .hero-bottom { position:absolute; inset:auto var(--gutter) 18px; padding:0; font-size:9px; gap:16px; }
   .hero-bottom>span:first-child { display:none; }
-  .hero-bottom a { gap:20px; }
+  .hero-bottom a { gap:16px; min-height:32px; }
   .hero-index { font-size:10px; white-space:nowrap; }
 
   h2 { font-size:clamp(37px,10vw,62px); }
@@ -191,7 +190,7 @@
   .wordmark { font-size:27px; }
   .header-icon { width:28px; }
   .header-cart { width:34px; }
-  .hero h1 { font-size:49px; }
+  .hero h1 { font-size:48px; }
   .hero-korean { font-size:14px; }
   .philosophy-copy h2 { font-size:37px; }
   .product-grid { gap:32px 14px; }
