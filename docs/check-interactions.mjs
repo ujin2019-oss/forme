@@ -59,7 +59,14 @@ for(const card of d.querySelectorAll('.journal-card')) {
 }
 const buttons=[...d.querySelectorAll('[data-step]')];
 for(const button of buttons) {
+  const previous=d.querySelector('[data-step][aria-expanded="true"]');
+  const previousImage=d.querySelector('#ritual-image').getAttribute('src');
+  const previousSummary=d.querySelector('#ritual-description').textContent;
   button.click();
+  assert.equal(d.querySelector('[data-step][aria-expanded="true"]'),previous,'Keep the current panel while decoding');
+  assert.equal(d.querySelector('#ritual-image').getAttribute('src'),previousImage);
+  assert.equal(d.querySelector('#ritual-description').textContent,previousSummary);
+  assert.equal(d.querySelector('.ritual-caption').getAttribute('aria-busy'),'true');
   a.pending.get(`assets/images/${button.dataset.ritualProduct}.jpg`).resolve();await tick();
   assert.equal(d.querySelectorAll('[data-step][aria-expanded="true"]').length,1);
   assert.equal(d.querySelectorAll('.step-content:not([hidden])').length,1);
@@ -67,6 +74,10 @@ for(const button of buttons) {
   assert.equal(d.querySelectorAll('.ritual-image-stage img').length,1);
   const link=d.getElementById(button.getAttribute('aria-controls')).querySelector('[data-product]');
   assert.equal(link.dataset.product,button.dataset.ritualProduct);
+  assert.equal(d.querySelector('#ritual-description').textContent,link.parentElement.querySelector('p').textContent,'Summary and panel stay in sync');
+  assert.equal(d.querySelector('.ritual-caption').getAttribute('aria-busy'),'false');
+  button.click();await tick();
+  assert.equal(button.getAttribute('aria-expanded'),'true','Reselecting the current step keeps one panel open');
 }
 buttons[0].focus();buttons[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true}));
 assert.equal(d.activeElement,buttons[3]);
@@ -102,6 +113,8 @@ assert.equal(steps[2].getAttribute('aria-expanded'),'true');
 steps[3].click();b.pending.get('assets/images/cream.jpg').reject(new Error('image unavailable'));await tick();
 assert.equal(steps[2].getAttribute('aria-expanded'),'true');
 assert.equal(b.d.querySelector('#ritual-image-stage').getAttribute('aria-busy'),'false');
+assert.equal(b.d.querySelector('.ritual-caption').getAttribute('aria-busy'),'false');
+assert.equal(b.d.querySelector('#ritual-description').textContent,b.d.querySelector('#step-balance p').textContent);
 b.dom.window.close();
 
 // Rapid clicks also cancel the previous fade and eventually leave one image.
@@ -113,5 +126,17 @@ c.animations.at(-1).finish();await tick();
 assert.ok(c.d.querySelector('#ritual-image').src.endsWith('cream.jpg'));
 assert.equal(c.d.querySelectorAll('.ritual-image-stage img').length,1);
 c.dom.window.close();
+
+// A failed request during an earlier fade must leave a single matching image.
+const e=await fixture(false,true);
+const fadingSteps=[...e.d.querySelectorAll('[data-step]')];
+fadingSteps[1].click();e.pending.get('assets/images/toner.jpg').resolve();await tick();
+fadingSteps[3].click();e.pending.get('assets/images/cream.jpg').reject(new Error('offline during fade'));await tick();
+assert.equal(e.d.querySelectorAll('.ritual-image-stage img').length,1);
+assert.equal(fadingSteps[1].getAttribute('aria-expanded'),'true');
+assert.ok(e.d.querySelector('#ritual-image').src.endsWith('toner.jpg'));
+assert.equal(e.d.querySelector('#ritual-description').textContent,e.d.querySelector('#step-prepare p').textContent);
+assert.equal(e.d.querySelector('.ritual-caption').getAttribute('aria-busy'),'false');
+e.dom.window.close();
 console.log('PASS: CSS syntax, product/journal/account/cart dialogs, search filtering and focus restoration, step/product/image mapping, single open panel, keyboard navigation, out-of-order image loads, failed image recovery, cancelled fades, reduced-motion path.');
 console.log('DOM simulation only; browser rendering, native modal behavior and visual/touch-target verification remain unverified.');

@@ -1,5 +1,7 @@
 # FORME. UI/UX 개선 결과
 
+이 문서는 이전 개선 기록입니다. 최신 변경 및 검수 범위는 [최종 모바일 UI/UX 개선](final-ui-ux-review.md)을 참고하세요.
+
 ## 수정 파일
 
 `index.html`, `css/style.css`, `css/responsive.css`, `js/main.js`, `check.mjs`, `docs/review.html`, `README.md`를 수정했습니다. 이 기록과 `docs/check-interactions.mjs`를 추가했습니다. `dist/`는 현재 소스로 다시 생성했습니다. 이미지와 폰트 파일은 변경하지 않았습니다.

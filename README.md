@@ -24,15 +24,17 @@ node serve.mjs
 - `index.html`: 시맨틱 구조, 9개 섹션, SEO / Open Graph, 접근성 내비게이션과 상세 dialog
 - `css/style.css`: 컬러·간격·타이포그래피 토큰, 12컬럼 비례를 활용한 레이아웃, 컴포넌트와 모션
 - `css/responsive.css`: PC / 태블릿 / 모바일 전환, 375px / 390px 대응
-- `js/main.js`: 제품 상세, 저널 본문, 성분·고객센터·SNS·사업자 안내, 루틴 아코디언, 모바일 메뉴, 키보드 조작, 스크롤 등장
+- `js/main.js`: 제품 상세, 저널 본문, 검색과 안내 모달, 루틴 아코디언·제품 설명 동기화, 키보드 조작, 스크롤 등장
 - `assets/images/`: AI 생성 사진 15개. 원본 PNG와 웹용 JPEG를 보관
 - `assets/fonts/`: Inter / Pretendard 가변 폰트와 각각의 OFL 라이선스
 - `assets/favicon.svg`: 브랜드 이니셜 파비콘
 - `docs/design-notes.md`: 레퍼런스 접근 결과, 디자인 방향, 섹션 설계와 검수 범위
 - `docs/image-prompts.json`: 모든 이미지의 실제 생성 프롬프트
-- `docs/review.html`: 1440px / 1024px / 768px / 390px / 360px iframe 뷰포트와 기능 점검 화면
-- `docs/ui-ux-review.md`: 이번 UI/UX 개선의 전후 비교, 파일 목록, 검수 결과와 미검증 항목
+- `docs/review.html`: 1440 / 1280 / 1024 / 768 / 430 / 390 / 360px iframe 뷰포트와 기능 점검 화면
+- `docs/final-ui-ux-review.md`: 최신 UI/UX 개선의 전후 비교, 수정 파일, 검수 결과와 미검증 항목
+- `docs/ui-ux-review.md`: 이전 UI/UX 개선 기록
 - `docs/check-interactions.mjs`: CSS 구문·DOM 동작·루틴 비동기 전환 회귀 검사
+- `docs/check-responsive.mjs`: 7개 폭의 CSS 선언 검사. 실제 레이아웃 검사는 별도 필요
 - `check.mjs`, `build.mjs`, `serve.mjs`: 정적 검사, 배포 폴더 생성, 로컬 서버
 - `.openai/hosting.json`: Sites 프로젝트와 정적 배포 설정
 - `dist/`: HTML / CSS / JS / JPEG / 폰트가 포함된 실행 가능한 정적 배포 결과
@@ -61,7 +63,7 @@ node serve.mjs
 
 로컬 HTTP 홈페이지와 검수 페이지 모두 HTTP 200 응답을 확인했습니다. 온라인 배포는 완료되지 않았습니다. Sites 프로젝트를 생성했지만, 외부 저장소 동기화는 자동 승인 검토에서 사용자의 로컬 제작 승인 범위와 외부 전송 대상·범위를 이유로 거절됐습니다. 외부 업로드를 재개하려면 사용자 승인이 필요합니다.
 
-**실제 브라우저 검수는 미완료입니다.** 이번 개선 작업에서는 브라우저 연결 호스트가 없었고, 기존 Edge 창 접근 승인도 시간 초과됐습니다. 따라서 1440px / 1024px / 768px / 390px / 360px의 실제 렌더링·크롭·대비·텍스트 겹침·네이티브 모달·터치 동작을 검증 완료로 보고하지 않습니다. `docs/review.html`에 다섯 뷰포트의 자동 검사와 섹션별 미리보기를 준비했습니다. DOM 시뮬레이션은 렌더링 검사를 대체하지 않습니다.
+**실제 브라우저 검수는 미완료입니다.** 최신 작업에서도 브라우저 연결 호스트가 없어 1440 / 1280 / 1024 / 768 / 430 / 390 / 360px의 실제 렌더링·크롭·대비·텍스트 겹침·네이티브 모달·터치 동작을 검증하지 못했습니다. CSS 선언·DOM 검사와 실제 검수의 구분은 [최신 보고서](docs/final-ui-ux-review.md)에 정리했습니다. `docs/review.html`에 일곱 뷰포트의 자동 검사와 섹션별 미리보기를 준비했습니다.
 
 기존 Live Server에서도 최신 HTML, CSS 2개, JavaScript, 검수 페이지가 HTTP 200으로 제공됨을 확인했습니다. 홈페이지는 `http://127.0.0.1:5500/forme/index.html`, 검수 화면은 `http://127.0.0.1:5500/forme/docs/review.html`입니다. 이번 작업에서는 Git commit / push 및 외부 배포를 하지 않았습니다.
 
@@ -70,6 +72,7 @@ node serve.mjs
 ```powershell
 npm install --prefix outputs/qa --cache outputs/npm-cache --no-package-lock --no-save --ignore-scripts jsdom css-tree
 node docs/check-interactions.mjs
+node docs/check-responsive.mjs
 ```
 
 ## 지원하지 않는 기능과 운영 전 필요사항

@@ -90,6 +90,7 @@ dialog.addEventListener('close', () => {
 });
 const ritualButtons = [...document.querySelectorAll('[data-step]')];
 const ritualStage = document.querySelector('#ritual-image-stage');
+const ritualCaption = document.querySelector('.ritual-caption');
 const ritualImageCache = new Map();
 let ritualRequest = 0;
 let ritualAnimation = null;
@@ -121,13 +122,14 @@ function setRitualState(button) {
   });
   document.querySelector('#ritual-number').textContent = `STEP 0${Number(button.dataset.step)+1}`;
   document.querySelector('#ritual-product').textContent = products[button.dataset.ritualProduct].name;
+  document.querySelector('#ritual-description').textContent = document.getElementById(button.getAttribute('aria-controls')).querySelector('p').textContent;
 }
 
 async function selectRitual(button) {
   const key = button.dataset.ritualProduct;
   const request = ++ritualRequest;
-  setRitualState(button);
   ritualStage.setAttribute('aria-busy', 'true');
+  ritualCaption.setAttribute('aria-busy', 'true');
   try {
     await loadRitualImage(key);
     if (request !== ritualRequest) return;
@@ -142,6 +144,8 @@ async function selectRitual(button) {
     const outgoing = [...ritualStage.querySelectorAll('img')];
     outgoing.forEach(item => item.removeAttribute('id'));
     ritualStage.append(image);
+    // Commit the decoded image, expanded panel and product summary together.
+    setRitualState(button);
     renderedRitualButton = button;
     if (!reducedMotion.matches && typeof image.animate === 'function') {
       ritualAnimation = image.animate([{opacity:0},{opacity:1}], {duration:240,easing:'ease-out'});
@@ -151,9 +155,16 @@ async function selectRitual(button) {
     if (request !== ritualRequest) return;
     outgoing.forEach(item => item.remove());
   } catch {
-    if (request === ritualRequest) setRitualState(renderedRitualButton);
+    if (request === ritualRequest) {
+      ritualAnimation?.cancel();
+      ritualStage.querySelectorAll('img:not(#ritual-image)').forEach(image => image.remove());
+      setRitualState(renderedRitualButton);
+    }
   } finally {
-    if (request === ritualRequest) ritualStage.setAttribute('aria-busy', 'false');
+    if (request === ritualRequest) {
+      ritualStage.setAttribute('aria-busy', 'false');
+      ritualCaption.setAttribute('aria-busy', 'false');
+    }
   }
 }
 ritualButtons.forEach((button,index) => {

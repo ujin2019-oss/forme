@@ -503,6 +503,8 @@ p{
   background:#e8e5dd;
   padding:16px 24px;
   min-height:56px}
+.ritual-summary{
+  display:none}
 .ritual-step{
   border-top:1px solid var(--line)}
 .ritual-step:last-child{
