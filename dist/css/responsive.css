@@ -76,8 +76,6 @@
   .hero-bottom a { gap:20px; }
   .hero-index { font-size:10px; white-space:nowrap; }
 
-  .section-label { padding-bottom:32px; font-size:10px; gap:16px; }
-  .section-label>span:last-child { font-size:11px; }
   h2 { font-size:clamp(37px,10vw,62px); }
   .section-heading { align-items:flex-start; flex-direction:column; gap:20px; margin-bottom:30px; }
   .section-heading h2 { margin-bottom:18px; }
@@ -196,8 +194,6 @@
   .hero h1 { font-size:49px; }
   .hero-korean { font-size:14px; }
   .philosophy-copy h2 { font-size:37px; }
-  .section-label { font-size:10px; gap:10px; }
-  .section-label>span:last-child { font-size:10px; }
   .product-grid { gap:32px 14px; }
   .product-name h3 { font-size:16px; }
   .journal-card h3 { font-size:21px; }

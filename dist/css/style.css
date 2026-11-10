@@ -86,21 +86,12 @@ p{
   margin-inline:auto}
 .section-pad{
   padding-block:var(--space)}
-.eyebrow,.section-label,.journal-meta,.hero-bottom,.product-category,.demo-note,figcaption{
+.eyebrow,.journal-meta,.hero-bottom,.product-category,.demo-note,figcaption{
   font-size:11px;
   letter-spacing:.08em;
   line-height:1.65}
 .eyebrow{
   font-weight:500}
-.section-label{
-  display:flex;
-  justify-content:space-between;
-  padding-bottom:48px;
-  letter-spacing:.07em}
-.section-label>span:last-child{
-  color:var(--muted);
-  letter-spacing:0;
-  font-size:12px}
 .section-heading{
   display:flex;
   justify-content:space-between;
@@ -444,8 +435,6 @@ p{
 .texture{
   background:var(--charcoal);
   color:var(--ivory)}
-.texture .section-label>span:last-child{
-  color:#c9c3b8}
 .texture-heading{
   display:flex;
   justify-content:space-between;
